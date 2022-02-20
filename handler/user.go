@@ -17,9 +17,6 @@ func NewUserHandler(userService user.Service) *userHandler {
 }
 
 func (h *userHandler) RegisterUser(c *gin.Context) {
-	// tangkap input dari user
-	// map input dari user ke struct RegisterUserInput
-	// struct di atas kita passing sebagai parameter service
 
 	var input user.RegisterUserInput
 
@@ -51,11 +48,6 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 }
 
 func (h *userHandler) Login(c *gin.Context) {
-	// use memasukan input (email & password)
-	// input ditangkap handler
-	// mapping dari input user ke input struct
-	// input struct passing ke service
-	// di service mencari dgn bantuan repository user dengan email x
 
 	var input user.LoginInput
 
@@ -83,4 +75,12 @@ func (h *userHandler) Login(c *gin.Context) {
 	response := helper.APIResponse("Successfuly loggedin", http.StatusOK, "success", formatter)
 
 	c.JSON(http.StatusOK, response)
+}
+
+func CheckEmailAvailability(c *gin.Context) {
+	// ada input email from user
+	// input email di-mapping ke struct input (di handler)
+	// struct input di-passing ke service
+	// service akan manggil repository - email sudah ada atau belum
+	// repository - db
 }
