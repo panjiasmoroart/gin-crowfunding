@@ -78,11 +78,6 @@ func (h *userHandler) Login(c *gin.Context) {
 }
 
 func (h *userHandler) CheckEmailAvailability(c *gin.Context) {
-	// ada input email from user
-	// input email di-mapping ke struct input (di handler)
-	// struct input di-passing ke service
-	// service akan manggil repository - email sudah ada atau belum
-	// repository - db
 	var input user.CheckEmailInput
 
 	// proses binding/mapping
@@ -116,9 +111,9 @@ func (h *userHandler) CheckEmailAvailability(c *gin.Context) {
 	// 	metaMessage = "Email has been registered"
 	// }
 
-	metaMessage := "Email is available"
+	metaMessage := "Email has been registered"
 	if isEmailAvailable {
-		metaMessage = "Email has been registered"
+		metaMessage = "Email is available"
 	}
 
 	response := helper.APIResponse(metaMessage, http.StatusOK, "success", data)
