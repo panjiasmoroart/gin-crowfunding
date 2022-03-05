@@ -22,6 +22,9 @@ func main() {
 
 	userService := user.NewService(userRepository)
 
+	// test upload file masih di hardcode dulu sementara
+	// userService.SaveAvatar(1, "images/Img-Profil.jpg")
+
 	userHandler := handler.NewUserHandler(userService)
 
 	router := gin.Default()
