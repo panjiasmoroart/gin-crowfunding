@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"gin-crowfunding/helper"
 	"gin-crowfunding/user"
 	"net/http"
@@ -122,19 +123,8 @@ func (h *userHandler) CheckEmailAvailability(c *gin.Context) {
 
 func (h *userHandler) UploadAvatar(c *gin.Context) {
 	// untuk upload file ini tidak menggunakan json tetapi berupa form data dalam hal ini gin punay FormFile
+	// c.FormFile(nama_keynya)
 	file, err := c.FormFile("avatar")
-	if err != nil {
-		data := gin.H{"is_uploaded": false}
-		response := helper.APIResponse("Failed to upload avatar image", http.StatusBadRequest, "error", data)
-
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
-
-	// simpan gambarnya di folder images
-	path := "images/" + file.Filename
-	// err tidak menggunakan := karena diatas sudah di definisikan
-	err = c.SaveUploadedFile(file, path)
 	if err != nil {
 		data := gin.H{"is_uploaded": false}
 		response := helper.APIResponse("Failed to upload avatar image", http.StatusBadRequest, "error", data)
@@ -145,6 +135,21 @@ func (h *userHandler) UploadAvatar(c *gin.Context) {
 
 	// harusnya dapat dari JWT
 	userID := 1
+
+	// simpan gambarnya di folder images
+	// path := "images/" + file.Filename
+	path := fmt.Sprintf("images/%d-%s", userID, file.Filename)
+
+	// err tidak menggunakan := karena diatas sudah di definisikan
+	err = c.SaveUploadedFile(file, path)
+	if err != nil {
+		data := gin.H{"is_uploaded": false}
+		response := helper.APIResponse("Failed to upload avatar image", http.StatusBadRequest, "error", data)
+
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
 	_, err = h.userService.SaveAvatar(userID, path)
 	if err != nil {
 		data := gin.H{"is_uploaded": false}
@@ -155,7 +160,7 @@ func (h *userHandler) UploadAvatar(c *gin.Context) {
 	}
 
 	data := gin.H{"is_uploaded": true}
-	response := helper.APIResponse("Avatar successfuly uploaded", http.StatusOK, "error", data)
+	response := helper.APIResponse("Avatar successfuly uploaded", http.StatusOK, "success", data)
 
 	c.JSON(http.StatusOK, response)
 }
