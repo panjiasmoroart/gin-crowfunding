@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"gin-crowfunding/auth"
 	"gin-crowfunding/handler"
 	"gin-crowfunding/user"
@@ -26,12 +25,12 @@ func main() {
 
 	// testing generate token
 	authService := auth.NewService()
-	fmt.Println(authService.GenerateToken(1001))
+	// fmt.Println(authService.GenerateToken(1001))
 
 	// test upload file masih di hardcode dulu sementara
 	// userService.SaveAvatar(1, "images/Img-Profil.jpg")
 
-	userHandler := handler.NewUserHandler(userService)
+	userHandler := handler.NewUserHandler(userService, authService)
 
 	router := gin.Default()
 	api := router.Group("/api/v1")
