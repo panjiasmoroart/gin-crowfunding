@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"gin-crowfunding/auth"
 	"gin-crowfunding/handler"
 	"gin-crowfunding/helper"
@@ -10,6 +9,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -67,7 +67,7 @@ func main() {
 
 func authMiddleware(authService auth.Service, userService user.Service) gin.HandlerFunc {
 	// middleware sesuatu yang ada ditengah-tengah antara user dan request userHandler
-	return func (c *gin.Context) {
+	return func(c *gin.Context) {
 		// ambil nilai header Authorization: Bearer tokentoken
 		authHeader := c.GetHeader("Authorization")
 
@@ -81,17 +81,36 @@ func authMiddleware(authService auth.Service, userService user.Service) gin.Hand
 		// Bearer tokentoken
 		tokenString := ""
 		arrayToken := strings.Split(authHeader, " ")
-		if len(arrayToken == 2) {
+		if len(arrayToken) == 2 {
 			tokenString = arrayToken[1]
 		}
 
-		token, err :=
+		// kita validasi token, kalo valid kita ambil user_id
+		token, err := authService.ValidateToken(tokenString)
+		if err != nil {
+			response := helper.APIResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+			return
+		}
 
+		claim, ok := token.Claims.(jwt.MapClaims)
+		if !ok || !token.Valid {
+			response := helper.APIResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+			return
+		}
+
+		userID := int(claim["user_id"].(float64))
+		// ambil user dari db berdasarkan user_id lewat service
+		user, err := userService.GetUserByID(userID)
+		if err != nil {
+			response := helper.APIResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+			return
+		}
+
+		// kita set context isinya user
+		c.Set("currentUser", user)
 	}
 
 }
-
-
-// kita validasi token, kalo valid kita ambil user_id
-// ambil user dari db berdasarkan user_id lewat service
-// kita set context isinya user
