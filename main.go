@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"gin-crowfunding/auth"
 	"gin-crowfunding/handler"
+	"gin-crowfunding/helper"
 	"gin-crowfunding/user"
 	"log"
+	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
@@ -63,8 +66,28 @@ func main() {
 }
 
 // middleware sesuatu yang ada ditengah-tengah antara user dan request userHandler
-// ambil nilai header Authorization: Bearer tokentoken
-// dari header Authorization, ambil tokennya saja
+func authMiddleware(c *gin.Context) {
+	// ambil nilai header Authorization: Bearer tokentoken
+	authHeader := c.GetHeader("Authorization")
+
+	if !strings.Contains(authHeader, "Bearer") {
+		response := helper.APIResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+		return
+	}
+
+	// dari header Authorization, ambil tokennya saja
+	// Bearer tokentoken
+	tokenString := ""
+	arrayToken := strings.Split(authHeader, " ")
+	if len(arrayToken == 2) {
+		tokenString = arrayToken[1]
+	}
+
+	token, err :=
+
+}
+
 // kita validasi token, kalo valid kita ambil user_id
 // ambil user dari db berdasarkan user_id lewat service
 // kita set context isinya user
