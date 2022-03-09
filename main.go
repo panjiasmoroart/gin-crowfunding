@@ -61,3 +61,10 @@ func main() {
 
 	router.Run()
 }
+
+// middleware sesuatu yang ada ditengah-tengah antara user dan request userHandler
+// ambil nilai header Authorization: Bearer tokentoken
+// dari header Authorization, ambil tokennya saja
+// kita validasi token, kalo valid kita ambil user_id
+// ambil user dari db berdasarkan user_id lewat service
+// kita set context isinya user
