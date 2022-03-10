@@ -51,7 +51,7 @@ func main() {
 
 	// test campaign service
 	campaignService := campaign.NewService(campaignRepository)
-	campaigns, err := campaignService.FindCampaigns(0)
+	campaigns, err := campaignService.GetCampaigns(0)
 	fmt.Println(len(campaigns))
 
 	userHandler := handler.NewUserHandler(userService, authService)
