@@ -25,7 +25,7 @@ func NewCampaignHandler(service campaign.Service) *campaignHandler {
 
 // api/v1/campaigns
 func (h *campaignHandler) GetCampaigns(c *gin.Context) {
-	// convert dulu string to int
+	// convert dulu string to int,  ?user_id=1  Query Params
 	userID, _ := strconv.Atoi(c.Query("user_id"))
 
 	campaigns, err := h.service.GetCampaigns(userID)
