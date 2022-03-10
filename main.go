@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"gin-crowfunding/auth"
+	"gin-crowfunding/campaign"
 	"gin-crowfunding/handler"
 	"gin-crowfunding/helper"
 	"gin-crowfunding/user"
@@ -24,33 +26,21 @@ func main() {
 	}
 
 	userRepository := user.NewRepository(db)
+	campaignRepository := campaign.NewRepository(db)
+
+	// campaigns, err := campaignRepository.FindAll()
+	campaigns, err := campaignRepository.FindByUserID(1)
+
+	fmt.Println("debug")
+	fmt.Println("debug")
+	fmt.Println("debug")
+	fmt.Println(len(campaigns))
+	for _, campaign := range campaigns {
+		fmt.Println(campaign.Name)
+	}
 
 	userService := user.NewService(userRepository)
-
-	// testing generate token
 	authService := auth.NewService()
-	// fmt.Println(authService.GenerateToken(1001))
-
-	// testing validate token
-	// token, err := authService.ValidateToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.JRouLhzpLqMitGBt8IEkgZOAHlRt9umx4RCl6Oiiijw")
-	// if err != nil {
-	// 	fmt.Println("ERROR")
-	// 	fmt.Println("ERROR")
-	// 	fmt.Println("ERROR")
-	// }
-
-	// if token.Valid {
-	// 	fmt.Println("VALID")
-	// 	fmt.Println("VALID")
-	// 	fmt.Println("VALID")
-	// } else {
-	// 	fmt.Println("INVALID")
-	// 	fmt.Println("INVALID")
-	// 	fmt.Println("INVALID")
-	// }
-
-	// test upload file masih di hardcode dulu sementara
-	// userService.SaveAvatar(1, "images/Img-Profil.jpg")
 
 	userHandler := handler.NewUserHandler(userService, authService)
 
