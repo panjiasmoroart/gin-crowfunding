@@ -31,6 +31,7 @@ func FormatCampaign(campaign Campaign) CampaignFormatter {
 
 // karena balikannya slice, maka perlu buat custom function lagi
 func FormatCampaigns(campaigns []Campaign) []CampaignFormatter {
+	// jika campaign tidak ada balikan "data": [] menggunakan []CampaignFormatter{} bukan "data": null
 	campaignsFormatter := []CampaignFormatter{}
 
 	for _, campaign := range campaigns {
