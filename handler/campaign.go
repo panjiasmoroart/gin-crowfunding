@@ -32,3 +32,10 @@ func (h *campaignHandler) GetCampaigns(c *gin.Context) {
 	response := helper.APIResponse("List of campaigns", http.StatusOK, "success", campaign.FormatCampaigns(campaigns))
 	c.JSON(http.StatusOK, response)
 }
+
+// singular buat detail campaign
+func (h *campaignHandler) GetCampaign(c *gin.Context) {
+	// repository : get campaign by id
+	// service : inputnya struct input => menangkap id di url
+	// handler : mapping id yg di url ke struct input => service
+}
