@@ -47,16 +47,22 @@ func FormatCampaigns(campaigns []Campaign) []CampaignFormatter {
 
 // formatter campaign_detail
 type CampaignDetailFormatter struct {
-	ID               int      `json:"id"`
-	Name             string   `json:"name"`
-	ShortDescription string   `json:"short_description"`
-	Description      string   `json:"description"`
-	ImageURL         string   `json:"image_url"`
-	GoalAmount       int      `json:"goal_amount"`
-	CurrentAmount    int      `json:"current_amount"`
-	UserID           int      `json:"user_id"`
-	Slug             string   `json:"slug"`
-	Perks            []string `json:"perks"`
+	ID               int                   `json:"id"`
+	Name             string                `json:"name"`
+	ShortDescription string                `json:"short_description"`
+	Description      string                `json:"description"`
+	ImageURL         string                `json:"image_url"`
+	GoalAmount       int                   `json:"goal_amount"`
+	CurrentAmount    int                   `json:"current_amount"`
+	UserID           int                   `json:"user_id"`
+	Slug             string                `json:"slug"`
+	User             CampaignUserFormatter `json:"user"`
+	Perks            []string              `json:"perks"`
+}
+
+type CampaignUserFormatter struct {
+	Name     string `json:"name"`
+	ImageURL string `json:"image_url"`
 }
 
 func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
@@ -76,13 +82,21 @@ func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
 	CampaignDetailFormatter.UserID = campaign.UserID
 	CampaignDetailFormatter.Slug = campaign.Slug
 
+	// perks
 	var perks []string
 	for _, perk := range strings.Split(campaign.Perks, ",") {
 		// buang juga spasinya
 		perks = append(perks, strings.TrimSpace(perk))
 	}
-
 	CampaignDetailFormatter.Perks = perks
+
+	// user
+	user := campaign.User
+	campaignUserFormatter := CampaignUserFormatter{}
+	campaignUserFormatter.Name = user.Name
+	campaignUserFormatter.ImageURL = user.AvatarFileName
+
+	CampaignDetailFormatter.User = campaignUserFormatter
 
 	return CampaignDetailFormatter
 }
