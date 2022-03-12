@@ -1,6 +1,9 @@
 package campaign
 
-import "time"
+import (
+	"gin-crowfunding/user"
+	"time"
+)
 
 type Campaign struct {
 	ID               int
@@ -17,6 +20,7 @@ type Campaign struct {
 	UpdatedAt        time.Time
 	// buat relasi ke CampaignImage
 	CampaignImages []CampaignImage
+	User           user.User
 }
 
 type CampaignImage struct {
