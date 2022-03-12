@@ -1,5 +1,7 @@
 package campaign
 
+import "strings"
+
 type CampaignFormatter struct {
 	ID               int    `json:"id"`
 	UserID           int    `json:"user_id"`
@@ -41,4 +43,46 @@ func FormatCampaigns(campaigns []Campaign) []CampaignFormatter {
 	}
 
 	return campaignsFormatter
+}
+
+// formatter campaign_detail
+type CampaignDetailFormatter struct {
+	ID               int      `json:"id"`
+	Name             string   `json:"name"`
+	ShortDescription string   `json:"short_description"`
+	Description      string   `json:"description"`
+	ImageURL         string   `json:"image_url"`
+	GoalAmount       int      `json:"goal_amount"`
+	CurrentAmount    int      `json:"current_amount"`
+	UserID           int      `json:"user_id"`
+	Slug             string   `json:"slug"`
+	Perks            []string `json:"perks"`
+}
+
+func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
+	CampaignDetailFormatter := CampaignDetailFormatter{}
+	CampaignDetailFormatter.ID = campaign.ID
+	CampaignDetailFormatter.Name = campaign.Name
+	CampaignDetailFormatter.ShortDescription = campaign.ShortDescription
+	CampaignDetailFormatter.Description = campaign.Description
+	CampaignDetailFormatter.ImageURL = ""
+
+	if len(campaign.CampaignImages) > 0 {
+		CampaignDetailFormatter.ImageURL = campaign.CampaignImages[0].FileName
+	}
+
+	CampaignDetailFormatter.GoalAmount = campaign.GoalAmount
+	CampaignDetailFormatter.CurrentAmount = campaign.CurrentAmount
+	CampaignDetailFormatter.UserID = campaign.UserID
+	CampaignDetailFormatter.Slug = campaign.Slug
+
+	var perks []string
+	for _, perk := range strings.Split(campaign.Perks, ",") {
+		// buang juga spasinya
+		perks = append(perks, strings.TrimSpace(perk))
+	}
+
+	CampaignDetailFormatter.Perks = perks
+
+	return CampaignDetailFormatter
 }
