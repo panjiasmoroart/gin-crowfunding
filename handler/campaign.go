@@ -97,5 +97,5 @@ func (h *campaignHandler) CreateCampaign(c *gin.Context) {
 // handler, menangkap inputnya bisa dari form ataupun uri/url
 // mapping input dari user ket input struct
 // input dari user, dan juga input dari uri (passing ke service)
-// service kita tulis logic update
+// service (find campaign by id dari url, tangkap parameter yg diinput oleh user)
 // repository update data campaign
