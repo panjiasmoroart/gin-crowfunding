@@ -19,7 +19,7 @@ type CreateCampaignInput struct {
 
 type CreateCampaignImageInput struct {
 	CampaignID int `form:"campaign_id" binding:"required"`
-	// remove required
+	// remove required fix bug
 	IsPrimary bool `form:"is_primary"`
 	User      user.User
 }
