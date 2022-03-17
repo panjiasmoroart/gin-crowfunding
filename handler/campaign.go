@@ -37,9 +37,6 @@ func (h *campaignHandler) GetCampaigns(c *gin.Context) {
 
 // singular buat detail campaign
 func (h *campaignHandler) GetCampaign(c *gin.Context) {
-	// repository : get campaign by id
-	// service : inputnya struct input => menangkap id di url
-	// handler : mapping id yg di url ke struct input => service
 
 	var input campaign.GetCampaignDetailInput
 
@@ -61,11 +58,6 @@ func (h *campaignHandler) GetCampaign(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-// langkah-langkah create campaign
-// tangkap parameter dari user ke input struct
-// ambil current user dari jwt/handler
-// panggil service, parameternya input struct yg telah dimapping
-// panggil repository untuk simpan data campaign baru
 func (h *campaignHandler) CreateCampaign(c *gin.Context) {
 	var input campaign.CreateCampaignInput
 
@@ -93,13 +85,6 @@ func (h *campaignHandler) CreateCampaign(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-// langkah-langkah update campaign
-// user melakukan input
-// handler, menangkap inputnya bisa dari form ataupun uri/url
-// mapping input dari user ket input struct
-// input dari user, dan juga input dari uri (passing ke service)
-// service (find campaign by id dari url, tangkap parameter yg diinput oleh user)
-// repository update data campaign
 func (h *campaignHandler) UpdateCampaign(c *gin.Context) {
 	var inputID campaign.GetCampaignDetailInput
 
@@ -136,21 +121,10 @@ func (h *campaignHandler) UpdateCampaign(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-// langkah upload campaign_images
-// handler
-// tangkap input dan ubah ke struct input
-// save image campaign ke suatu folder
-
-// service
-// 1. kondisi manggil 2 di repository, panggil repo point 1
-
-// repository
-// 1. create image/save ke dalam table campaign_images
-// 2. ubah is_primary 1 (true) ke false jika sebelumnya sudah ada is_primary 1
 func (h *campaignHandler) UploadImage(c *gin.Context) {
 	var input campaign.CreateCampaignImageInput
 
-	// karen form bukan json
+	// karena form bukan json
 	err := c.ShouldBind(&input)
 	if err != nil {
 		errors := helper.FormatValidationError(err)
