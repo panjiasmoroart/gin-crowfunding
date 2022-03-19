@@ -1,6 +1,9 @@
 package transaction
 
-import "time"
+import (
+	"gin-crowfunding/user"
+	"time"
+)
 
 // Representasi dari table transactions
 type Transaction struct {
@@ -10,6 +13,8 @@ type Transaction struct {
 	Amount     int
 	Status     string
 	Code       string
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
+	// relationship
+	User      user.User
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }

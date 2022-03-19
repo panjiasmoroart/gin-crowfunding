@@ -26,6 +26,7 @@ func main() {
 
 	userRepository := user.NewRepository(db)
 	campaignRepository := campaign.NewRepository(db)
+	// transactionRepository := transaction.NewRepository(db)
 
 	// testing repository from main
 	// campaigns, err := campaignRepository.FindAll()
