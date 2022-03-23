@@ -18,7 +18,7 @@ import (
 )
 
 func main() {
-	dsn := "panjiasmoro:panjiasmoro090949@tcp(127.0.0.1:3306)/crowfunding?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "panjiasmoro:panjiasmoro090949@tcp(127.0.0.1:3306)/go_crowfunding?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
@@ -29,24 +29,6 @@ func main() {
 	campaignRepository := campaign.NewRepository(db)
 	transactionRepository := transaction.NewRepository(db)
 
-	// testing repository from main
-	// campaigns, err := campaignRepository.FindAll()
-	// campaigns, err := campaignRepository.FindByUserID(1)
-
-	// fmt.Println("debug")
-	// fmt.Println("debug")
-	// fmt.Println("debug")
-	// fmt.Println(len(campaigns))
-	// for _, campaign := range campaigns {
-	// 	fmt.Println(campaign.Name)
-	// 	// menampilkan data relasi
-	// 	if len(campaign.CampaignImages) > 0 {
-	// 		fmt.Println("jumlah gambar")
-	// 		fmt.Println(len(campaign.CampaignImages))
-	// 		fmt.Println(campaign.CampaignImages[0].FileName)
-	// 	}
-	// }
-
 	userService := user.NewService(userRepository)
 	authService := auth.NewService()
 
@@ -56,20 +38,6 @@ func main() {
 	// fmt.Println(len(campaigns))
 
 	transactionService := transaction.NewService(transactionRepository)
-
-	// test service CreateCampaign
-	// input := campaign.CreateCampaignInput{}
-	// input.Name = "Penggalangan Dana Startup"
-	// input.ShortDescription = "short"
-	// input.Description = "Long description"
-	// input.GoalAmount = 100000000
-	// input.Perks = "hadiah satu, dua, dan tiga"
-	// inputUser, _ := userService.GetUserByID(1)
-	// input.User = inputUser
-	// _, err = campaignService.CreateCampaign(input)
-	// if err != nil {
-	// 	log.Fatal(err.Error())
-	// }
 
 	userHandler := handler.NewUserHandler(userService, authService)
 	campaignHandler := handler.NewCampaignHandler(campaignService)
